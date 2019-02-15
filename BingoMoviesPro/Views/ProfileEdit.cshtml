@@ -1,0 +1,53 @@
+﻿@using System.Web.Configuration
+@using Microsoft.AspNet.Identity
+@model IEnumerable<BingoMoviesPro.Models.UserSignUp>
+@{
+    var Name = ViewBag.Name;
+    var LastName = ViewBag.LastName;
+    var Pri = ViewBag.ProfileImagePath;
+}
+
+@using (Html.BeginForm("ManageProfile", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%; margin:auto" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group" style="width:100%;">
+        <div class="col-md-10" style="width:100%;">
+            <img src="@Pri" width="40" class="img-circle">
+            @Html.TextBoxFor(m => m.First().ProfileImage, new { @Value = Pri, @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.First().ProfileImage, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group" style="width:100%;">
+        <div class="col-md-10" style="float:left;width: 50%;">
+            @Html.Label("FirstName", "სახელი")
+            @Html.TextBoxFor(m => m.First().FirstName, new { @Value = Name, @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.First().FirstName, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-10" style="float:right;width: 50%;">
+            @Html.Label("LastName", "გვარი")
+            @Html.TextBoxFor(m => m.First().LastName, new { @Value = LastName, @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.First().LastName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group" style="width:100%;">
+        <div class="col-md-10" style="width:100%;">
+            @Html.Label("Email", "იმეილი")
+            @Html.TextBox("Email", User.Identity.GetUserName(), new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group" style="width: 100%;">
+        <div class="col-md-offset-2 col-md-10" style="margin-left:0px;">
+            <input type="submit" value="რედაქტირება" class="btn btn-default" style="background: #7460ee; color:white;" />
+        </div>
+    </div>
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

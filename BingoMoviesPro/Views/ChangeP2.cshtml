@@ -1,0 +1,32 @@
+﻿@using BingoMoviesPro.Models
+@model ChangePasswordViewModel
+@using (Html.BeginForm("ChangePassword", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group" style="width:100%;">
+        <div class="col-md-10" style="width:100%;">
+            @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control", @placeholder = "არსებული პაროლი" })
+        </div>
+    </div>
+    <div class="form-group" style="width:100%;">
+        <div class="col-md-10" style="width:100%;">
+            @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control", @placeholder = "ახალი პაროლი" })
+        </div>
+    </div>
+    <div class="form-group" style="width:100%;">
+        <div class="col-md-10" style="width:100%;">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "გაიმეორეთ პაროლი" })
+        </div>
+    </div>
+    <div class="form-group" style="width:100%;">
+        <div class="col-md-offset-2 col-md-10" style="width:100%;margin-left: 0px;">
+            <input type="submit" value="რედაქტირება" class="btn btn-default" style="background: #7460ee;color:white;" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

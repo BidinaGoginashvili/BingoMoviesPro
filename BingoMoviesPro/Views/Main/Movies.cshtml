@@ -1,0 +1,218 @@
+﻿
+@using BingoMoviesPro.Models
+@using Microsoft.AspNet.Identity
+@model BingoMoviesPro.ViewModel.AccountClass
+@{
+    Layout = null;
+    var name = User.Identity.Name;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BingoMovies</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <link href="~/Content/img/favicon.png" rel="icon">
+    <link href="~/Content/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/Content/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="~/Content/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/Content/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    @@font-face {
+        font-family: 'alk';
+        src: url("../../Content/Fonts/alk-sanet.ttf");
+    }
+</style>
+<body>
+    <header id="header" style="background-color: black;padding:23px 0;height:72px;">
+        <div class="container-fluid">
+
+            <div id="logo" class="pull-left">
+                <h1><a href="/Main/MainPage" class="scrollto">Bingo</a></h1>
+            </div>
+
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li class="menu-active"><a href="#intro" style="font-family:'Montserrat', sans-serif;font-weight: 700;">TV</a></li>
+                    <li><a href="/Main/Movies">ფილმი</a></li>
+                    <li><a href="#services">სერიალი</a></li>
+                    <li><a href="#about" style="font-family:'alk';">თამაშები</a></li>
+
+                    <li class="menu-has-children">
+                        @if (!Request.IsAuthenticated)
+                        {
+                            <a href="">შესვლა</a>
+                            <ul>
+                                <li><a href="#" data-toggle="modal" data-target="#exampleModal">შესვლა</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#exampleModal">რეგისტრაცია</a></li>
+                            </ul>
+                        }
+                        else if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <a href="" style="font-family: 'Montserrat', sans-serif; font-weight: 550;">@User.Identity.GetUserName()</a>
+                            <ul>
+                                <li><a href="/Manage/Index">სამართავი პანელი</a></li>
+                                <li><a href="/Manage/Index">კოლექცია</a></li>
+                                <li><a href="/Manage/Index">ვაპირებ ყურებას</a></li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">გამოსვლა</a></li>
+                                }
+                            </ul>
+                        }
+                        else if (Request.IsAuthenticated && User.IsInRole("User"))
+                        {
+                            <a href="" style="font-family: 'Montserrat', sans-serif; font-weight: 550;">@User.Identity.GetUserName()</a>
+                            <ul>
+                                <li><a href="/Manage2/UserPage/@ViewBag.mine ">სამართავი პანელი</a></li>
+                                <li><a href="/Manage2/UserPage/@ViewBag.mine">ვაპირებ ყურებას</a></li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">გამოსვლა</a></li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="modal fade" id="exampleModal" tabindex="-1" style="text-align: center;position:absolute;z-index:10000000;" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#SignUp" style="color:black;">რეგისტრაცია</a></li>
+                        <li><a data-toggle="tab" href="#SignIn" style="color:black;padding-left: 30px;">შესვლა</a></li>
+                    </ul>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content" style="width: 100%;">
+                        <div id="SignUp" class="tab-pane fade in active">
+                            @Html.Partial("~/Views/SignUp.cshtml", Model.Register)
+                        </div>
+                        <div id="SignIn" class="tab-pane fade in">
+                            @Html.Partial("~/Views/SingIn.cshtml", Model.Login)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="intro" style="position:relative;display: none;"></section>
+    <main id="main">
+        <section id="portfolio" class="section-bg">
+            <div class="container">
+                <header class="section-header">
+                    <br />
+                    <h5 class="section-title" style="color:#575757; font-family:'alk'; font-size:17px;">ფილმები</h5>
+                </header>
+                <div class="row portfolio-container">
+                    @foreach (var item in Model.Movies)
+                    {
+                        <div class="col-lg-3 col-md-6 portfolio-item filter-app wow fadeInUp" data-wow-delay="0.1s" style="width:300px;height:400px;">
+                            <div class="portfolio-wrap">
+                                <figure>
+                                    <img src="@item.MovieImgpath" class="img-fluid" alt="" style="width: 100%;height:240px;">
+                                </figure>
+
+                                <div class="portfolio-info">
+                                    <p style="font-size:12px;"><a href="/Main/Details/@item.Id">@item.MovieTitleKa</a></p>
+                                    <p style="font-size:12px;">@item.ReleaseDate</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-6 footer-info">
+                        <h3>BizPage</h3>
+                        <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>გვერდები</h4>
+                        <ul>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">მთავარი</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">ფილმი</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">სერიალი</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">თამაშები</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Privacy policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h4>კონტაქტი</h4>
+                        <p>
+                            A108 Adam Street <br>
+                            New York, NY 535022<br>
+                            United States <br>
+                            <strong>Phone:</strong> +1 5589 55488 55<br>
+                            <strong>Email:</strong> info@example.com<br>
+                        </p>
+
+                        <div class="social-links">
+                            <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+                            <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+                            <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-newsletter">
+                        <h4>საინფორმაციო ბიულეტენი</h4>
+                        <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna veniam enim veniam illum dolore legam minim quorum culpa amet magna export quem marada parida nodela caramase seza.</p>
+                        <form action="" method="post">
+                            <input type="email" name="email"><input type="submit" value="Subscribe">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <script src="~/Content/lib/jquery/jquery.min.js"></script>
+    <script src="~/Content/lib/jquery/jquery-migrate.min.js"></script>
+    <script src="~/Content/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/lib/easing/easing.min.js"></script>
+    <script src="~/Content/lib/superfish/hoverIntent.js"></script>
+    <script src="~/Content/lib/superfish/superfish.min.js"></script>
+    <script src="~/Content/lib/wow/wow.min.js"></script>
+    <script src="~/Content/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/Content/lib/counterup/counterup.min.js"></script>
+    <script src="~/Content/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/Content/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="~/Content/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/Content/lib/touchSwipe/jquery.touchSwipe.min.js"></script>
+    <script src="~/Content/contactform/contactform.js"></script>
+    <script src="~/Content/js/main.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+</body>
+</html>
+
+

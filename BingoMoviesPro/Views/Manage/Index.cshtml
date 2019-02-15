@@ -1,0 +1,541 @@
+﻿@using BingoMoviesPro.Models
+@using Microsoft.AspNet.Identity
+@model BingoMoviesPro.ViewModel.ProfileViewModel
+@{
+                /**/
+
+                Layout = null;
+                var profileimg = ViewBag.ProfileImage;
+                int myid = ViewBag.Id;
+}
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    @@font-face {
+        font-family: 'alk';
+        src: url("../../Content/Fonts/alk-sanet.ttf");
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
+    <title>Ample Admin Template - The Ultimate Multipurpose admin template</title>
+    <link href="~/Content/AdminPanel/html/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/plugins/bower_components/chartist-js/dist/chartist.min.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/html/css/animate.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/html/css/style.css" rel="stylesheet">
+    <link href="~/Content/AdminPanel/html/css/colors/default.css" id="theme" rel="stylesheet">
+</head>
+
+<body class="fix-header">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
+    </div>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top m-b-0">
+            <div class="navbar-header">
+                <div class="top-left-part">
+                    <a class="logo" href="index.html">
+                        </b>
+                        <span class="hidden-xs"> </span>
+                    </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right pull-right">
+                    <li>
+                        <form role="search" class="app-search hidden-sm hidden-xs m-r-10">
+                            <input type="text" placeholder="Search..." class="form-control" style="font-family: Rubik,sans-serif;"> <a href=""><i class="fa fa-search"></i></a>
+                        </form>
+                    </li>
+                    <li>
+                        <a class="profile-pic" href="#" style="font-family: Rubik,sans-serif;"> <img src="@profileimg" width="36" class="img-circle"><b class="hidden-xs">@User.Identity.GetUserName()</b></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav slimscrollsidebar">
+                <div class="sidebar-head">
+                    <h3><span class="fa-fw open-close"><i class="ti-close ti-menu"></i></span> <span class="hide-menu">Navigation</span></h3>
+                </div>
+                <ul class="nav" id="side-menu">
+                    <li style="padding: 70px 0 0;">
+                        <a href="/Main/MainPage" class="waves-effect"><i class="fa fa-home fa-fw" aria-hidden="true"></i>მთავარი</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect" data-toggle="modal" data-target="#myModal"><i class="fa fa-user fa-fw"></i>პროფილი</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect" data-toggle="modal" data-target="#myModal"><i class="fa fa-key fa-fw" aria-hidden="true"></i>პაროლის შეცვლა</a>
+                    </li>
+                    <li>
+                        <a href=#" class="waves-effect"><i class="fa fa-group fa-fw" aria-hidden="true"></i>მომხმარებლები</a>
+                    </li>
+                    <li>
+                        <a href="/Main/Movies" class="waves-effect"><i class="fa fa-film fa-fw" aria-hidden="true"></i>ფილმები</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus fa-fw" aria-hidden="true"></i>ფილმების დამატება</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect" data-toggle="modal" data-target="#exampleModal3"><i class="fa fa-sliders fa-fw" aria-hidden="true"></i>სლაიდერის კონტროლი</a>
+                    </li>
+                    <li>
+                        <a href="#" class="waves-effect" data-toggle="modal" data-target="#myModal"><i class="fa fa-warning fa-fw" aria-hidden="true"></i>ფილმის დამატების წესი</a>
+                    </li>
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <li>
+                            <a href="javascript:document.getElementById('logoutForm').submit()" class="waves-effect"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>გამოსვლა</a>
+                        </li>
+                    }
+                </ul>
+                <div class="center p-20">
+                    <a href="https://wrappixel.com/templates/ampleadmin/" target="_blank" class="btn btn-danger btn-block waves-effect waves-light">Upgrade to Pro</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 100%;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">მსახიობის დამატება</h5>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("AddActor", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                        {
+                            <div class="form-group" style="width:100%">
+                                <div class="col-md-10" style="width:100%">
+                                    @Html.TextBoxFor(m => m.MovieActors.FullName, new { @class = "form-control", @placeholder = "მსახიობის სრული სახელი" })
+                                    @Html.ValidationMessageFor(x => x.MovieActors.FullName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" style="width:100%">
+                                <div class="col-md-10" style="width:100%">
+                                    @Html.TextBoxFor(m => m.MovieActors.ActorImg, new { @class = "form-control", @placeholder = "მსახიობის სურათი" })
+                                    @Html.ValidationMessageFor(x => x.MovieActors.ActorImg, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group" style="width:100%;">
+                                <div class="col-md-offset-2 col-md-10" style="width:100%;margin-left: 0px;">
+                                    <input type="submit" value="დამატება" class="btn btn-default" style="background: #7460ee;color:white;" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- slider-->
+        <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#Slider1" style="color:black;">1</a></li>
+                            <li><a data-toggle="tab" href="#Slider2" style="color:black;padding-left: 30px;">2</a></li>
+                            <li><a data-toggle="tab" href="#Slider3" style="color:black;padding-left: 30px;">3</a></li>
+                            <li><a data-toggle="tab" href="#Slider4" style="color:black;padding-left: 30px;">4</a></li>
+                            <li><a data-toggle="tab" href="#Slider5" style="color:black;padding-left: 30px;">5</a></li>
+                        </ul>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content" style="width: 100%;">
+                            <div id="Slider1" class="tab-pane fade in active">
+                                @foreach (var item in Model.slider.Where(x => x.Id == 1))
+                                {
+                                    using (Html.BeginForm("ChangeSlider", "Manage", new { Id = item.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                                    {
+                                        @Html.Label("FirstName", "სურათის ლინკი")
+                                        <input type="text" class="form-control" value="@item.imgSlider" name="img" />
+                                        @Html.Label("FirstName", "ფილმის სახელი")
+                                        <input type="text" class="form-control" value="@item.linkSlider" name="link" />
+                                        @Html.Label("FirstName", "ფილმის ლინკი")
+                                        <input type="text" class="form-control" value="@item.textSlider" name="text" />
+                                        <button type="submit" class="btn btn-default" style="background: #7460ee;color:white;">რედაქტირება</button>
+                                    }
+                                }
+                            </div>
+                            <div id="Slider2" class="tab-pane fade in">
+                                @foreach (var item in Model.slider.Where(x => x.Id == 2))
+                                {
+                                    using (Html.BeginForm("ChangeSlider", "Manage", new { Id = item.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                                    {
+                                        @Html.Label("FirstName", "სურათის ლინკი")
+                                        <input type="text" class="form-control" value="@item.imgSlider" name="img" />
+                                        @Html.Label("FirstName", "ფილმის სახელი")
+                                        <input type="text" class="form-control" value="@item.linkSlider" name="link" />
+                                        @Html.Label("FirstName", "ფილმის ლინკი")
+                                        <input type="text" class="form-control" value="@item.textSlider" name="text" />
+                                        <button type="submit" class="btn btn-default" style="background: #7460ee;color:white;">რედაქტირება</button>
+                                    }
+                                }
+                            </div>
+                            <div id="Slider3" class="tab-pane fade in">
+                                @foreach (var item in Model.slider.Where(x => x.Id == 3))
+                                {
+                                    using (Html.BeginForm("ChangeSlider", "Manage", new { Id = item.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                                    {
+
+                                        @Html.Label("FirstName", "სურათის ლინკი")
+                                        <input type="text" class="form-control" value="@item.imgSlider" name="img" />
+                                        @Html.Label("FirstName", "ფილმის სახელი")
+                                        <input type="text" class="form-control" value="@item.linkSlider" name="link" />
+                                        @Html.Label("FirstName", "ფილმის ლინკი")
+                                        <input type="text" class="form-control" value="@item.textSlider" name="text" />
+                                        <button type="submit" class="btn btn-default" style="background: #7460ee;color:white;">რედაქტირება</button>
+                                    }
+                                }
+                            </div>
+                            <div id="Slider4" class="tab-pane fade in">
+                                @foreach (var item in Model.slider.Where(x => x.Id == 4))
+                                {
+                                    using (Html.BeginForm("ChangeSlider", "Manage", new { Id = item.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                                    {
+                                        @Html.Label("FirstName", "სურათის ლინკი")
+                                        <input type="text" class="form-control" value="@item.imgSlider" name="img" />
+
+                                        @Html.Label("FirstName", "ფილმის სახელი")
+                                        <input type="text" class="form-control" value="@item.linkSlider" name="link" />
+                                        @Html.Label("FirstName", "ფილმის ლინკი")
+                                        <input type="text" class="form-control" value="@item.textSlider" name="text" />
+                                        <button type="submit" class="btn btn-default" style="background: #7460ee;color:white;">რედაქტირება</button>
+                                    }
+                                }
+                            </div>
+                            <div id="Slider5" class="tab-pane fade in">
+                                @foreach (var item in Model.slider.Where(x => x.Id == 5))
+                                {
+                                    using (Html.BeginForm("ChangeSlider", "Manage", new { Id = item.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                                    {
+                                        @Html.Label("FirstName", "სურათის ლინკი")
+                                        <input type="text" class="form-control" value="@item.imgSlider" name="img" />
+                                        @Html.Label("FirstName", "ფილმის სახელი")
+                                        <input type="text" class="form-control" value="@item.linkSlider" name="link" />
+                                        @Html.Label("FirstName", "ფილმის ლინკი")
+                                        <input type="text" class="form-control" value="@item.textSlider" name="text" />
+                                        <button type="submit" class="btn btn-default" style="background: #7460ee;color:white;">რედაქტირება</button>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- slider-->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#Profile" style="color:black;">პროფილის რედაქტირება</a></li>
+                            <li><a data-toggle="tab" href="#Password" style="color:black;padding-left: 30px;">პაროლის შეცვლა</a></li>
+                            <li><a data-toggle="tab" href="#AddMovie" style="color:black;padding-left: 30px;">ფილმის დამატება</a></li>
+                            <li><a data-toggle="tab" href="#Rule" style="color:black;padding-left: 30px;">ფილმის დამატების წესები</a></li>
+                        </ul>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content" style="width: 100%;">
+                            <div id="Profile" class="tab-pane fade in active">
+                                @Html.Partial("~/Views/ProfileEdit.cshtml", Model.UserSignUp)
+                            </div>
+                            <div id="Password" class="tab-pane fade in">
+                                @Html.Partial("~/Views/ChangeP2.cshtml", Model.ChangePasswordViewModel)
+                            </div>
+                            <div id="AddMovie" class="tab-pane fade in">
+                                @using (Html.BeginForm("AddMovie", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                                {
+
+                                    <div class="form-group" style="width:100%">
+                                        <div class="col-md-10" style="width:50%">
+                                            @Html.TextBoxFor(m => m.MovieMains.MovieTitleKa, new { @class = "form-control", @placeholder = "ფილმის სახელი ქართულად" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.MovieTitleKa, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-10" style="width:50%">
+                                            @Html.TextBoxFor(m => m.MovieMains.MovieTitleEng, new { @class = "form-control", @placeholder = "ფილმის სახელი ინგლისურად", name = "MovieTitleEng" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.MovieTitleEng, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="width:100%">
+                                        <div class="col-md-10" style="width:50%">
+                                            @Html.TextBoxFor(m => m.MovieMains.MovieImgpath, new { @class = "form-control", @placeholder = "Img path" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.MovieImgpath, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <div class="col-md-10" style="width:50%">
+                                            @Html.TextBoxFor(m => m.MovieMains.MovieVdpath, new { @class = "form-control", @placeholder = "Video path" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.MovieVdpath, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="width: 100%">
+                                        <div class="col-md-10" style="width: 100%;">
+                                            @Html.TextBoxFor(m => m.MovieMains.DirectorFullName, new { @class = "form-control", @placeholder = "დირექტორის სრული სახელი" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.DirectorFullName, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="width:100%">
+                                        <div class="col-md-10" style="width:20%">
+                                            @Html.TextBoxFor(m => m.MovieMains.ReleaseDate, new { @class = "form-control", @placeholder = "გამოშვების წელი" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.ReleaseDate, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <div class="col-md-10" style="width:20%">
+                                            @Html.TextBoxFor(m => m.MovieMains.MovieLength, new { @class = "form-control", @placeholder = "ხანგრძლივობა" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.MovieLength, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <div class="col-md-10" style="width:20%">
+                                            @Html.TextBoxFor(m => m.MovieMains.MovieImdb, new { @class = "form-control", value = "IMDB" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.MovieImdb, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <div class="col-md-10" style="width:20%">
+                                            @Html.TextBoxFor(m => m.MovieMains.budget, new { @class = "form-control", placeholder = "ბიუჟეტი" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.budget, "", new { @class = "text-danger" })
+
+                                        </div>
+                                        <div class="col-md-10" style="width:20%">
+                                            @Html.DropDownList("Genre", (IEnumerable<SelectListItem>)ViewBag.Genre, "ჟანრი", new { @class = "form-control", })
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="width:100%">
+                                        <div class="col-md-10" style="width:100%">
+                                            @Html.TextAreaFor(m => m.MovieMains.Description, new { @class = "form-control", placeholder = "აღწერა" })
+                                            @Html.ValidationMessageFor(x => x.MovieMains.Description, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="width:100%">
+                                        <div class="col-md-10" style="width:25%">
+                                            @Html.DropDownList("Departments", (IEnumerable<SelectListItem>)ViewBag.Departments, "Actor1", new { @class = "form-control", })
+                                        </div>
+                                        <div class="col-md-10" style="width:25%">
+                                            @Html.DropDownList("Departments2", (IEnumerable<SelectListItem>)ViewBag.Departments2, "Actor2", new { @class = "form-control", })
+                                        </div>
+                                        <div class="col-md-10" style="width:25%">
+                                            @Html.DropDownList("Departments3", (IEnumerable<SelectListItem>)ViewBag.Departments3, "Actor3", new { @class = "form-control", })
+                                        </div>
+                                        <div class="col-md-10" style="width:25%">
+                                            @Html.DropDownList("Departments4", (IEnumerable<SelectListItem>)ViewBag.Departments4, "Actor4", new { @class = "form-control", })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="width:100%;">
+                                        <div class="col-md-offset-2 col-md-10" style="width:100%;margin-left: 0px;">
+                                            <input type="submit" value="დამატება" class="btn btn-default" style="background: #7460ee;color:white;" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div id="Rule" class="tab-pane fade in">
+                                <p style="font-size:13px;font-family:'alk';">
+                                    ფილმის დამატებისას უნდა გაითვალისწინოთ:<br />
+                                    1.1 არ უნდა დავტოვოთ არცერთი ველი ცარიელი...<br />
+                                    1.2 ფილმის დამატებამდე უნდა დაემატოს ის მსახიობები, რომლებიც შესაბამის ფილმში იღებენ მონაწილეობას...<br />
+                                    1.3 სურათი არ უნდა იყოს ცუდი ხარისხის...<br />
+                                    1.4 ვიდეოს ლინკი შეგიძლიათ მოიძიოთ srulad.com-ზე...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title" style="font-family: Rubik,sans-serif;">Dashboard</h4>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                        <a href="#" target="_blank" class="btn btn-danger pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light" style="font-family: Rubik,sans-serif;" data-toggle="modal" data-target="#exampleModal">Actor<i class="fa fa-plus fa-fw" aria-hidden="true"></i></a>
+                        <ol class="breadcrumb">
+                            <li><a href="#">Dashboard</a></li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6 col-xs-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">ჯამური ვიზიტი</h3>
+                            <ul class="list-inline two-part">
+                                <li>
+                                    <div id="sparklinedash"></div>
+                                </li>
+                                <li class="text-right"><i class="ti-arrow-up text-success"></i> <span class="counter text-success">659</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 col-xs-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">ჯამური გვერდის ნახვა</h3>
+                            <ul class="list-inline two-part">
+                                <li>
+                                    <div id="sparklinedash2"></div>
+                                </li>
+                                <li class="text-right"><i class="ti-arrow-up text-purple"></i> <span class="counter text-purple">869</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 col-xs-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">უნიკალური მომხმარებლები</h3>
+                            <ul class="list-inline two-part">
+                                <li>
+                                    <div id="sparklinedash3"></div>
+                                </li>
+                                <li class="text-right"><i class="ti-arrow-up text-info"></i> <span class="counter text-info">911</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box">
+
+                            <h3 class="box-title">ახალი მომხმარებლები</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>სახელი</th>
+                                            <th>იმეილი</th>
+                                            <th>MovieMan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.UserSignUp.Where(x => x.ApplicationUserId != @User.Identity.GetUserId()))
+                                        {
+                                            <tr>
+                                                <td>@item.Id</td>
+                                                <td class="txt-oflo">@item.FirstName @item.LastName</td>
+                                                <td>@item.ApplicationUsers.Email</td>
+                                                <td><span class="text-success">movieman</span></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-8 col-sm-12">
+                        <div class="white-box">
+                            <h3 class="box-title">ახალი კომენტარები</h3>
+
+                            <div class="comment-center p-t-10">
+                                <div class="comment-body">
+                                    <div class="user-img">
+                                        <img src="" alt="user" class="img-circle">
+                                    </div>
+                                    <div class="mail-contnet">
+                                        <h5>Pavan kumar</h5><span class="time">10:20 AM 20 may 2016</span>
+                                        <br /><span class="mail-desc">Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat</span> <a href="javacript:void(0)" class="btn btn btn-rounded btn-default btn-outline m-r-5"><i class="ti-check text-success m-r-5"></i>Approve</a><a href="javacript:void(0)" class="btn-rounded btn btn-default btn-outline"><i class="ti-close text-danger m-r-5"></i> Reject</a>
+                                    </div>
+                                </div>
+                                <div class="comment-body">
+                                    <div class="user-img">
+                                        <img src="~/Content/AdminPanel/plugins/images/users/sonu.jpg" alt="user" class="img-circle">
+                                    </div>
+                                    <div class="mail-contnet">
+                                        <h5>Sonu Nigam</h5><span class="time">10:20 AM 20 may 2016</span>
+                                        <br /><span class="mail-desc">Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat</span>
+                                    </div>
+                                </div>
+                                <div class="comment-body b-none">
+                                    <div class="user-img">
+                                        <img src="~/Content/AdminPanel/plugins/images/users/arijit.jpg" alt="user" class="img-circle">
+                                    </div>
+                                    <div class="mail-contnet">
+                                        <h5>Arijit singh</h5><span class="time">10:20 AM 20 may 2016</span>
+                                        <br /><span class="mail-desc">Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="panel">
+                            <div class="sk-chat-widgets">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        მომხმარებლები
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="chatonline">
+                                            <li>
+                                                @foreach (var item in Model.UserSignUp.Where(x => x.ApplicationUserId != User.Identity.GetUserId()))
+                                                {
+                                                    <div class="call-chat">
+                                                        <button class="btn btn-info btn-circle btn-lg" type="button"><i class="fa fa-comments-o"></i></button>
+                                                    </div>
+                                                    <a href="@item.Id"><img src="~/Content/AdminPanel/plugins/images/users/535_fight_club-floydworx.png" alt="user-img" class="img-circle"> <span>@item.FirstName @item.LastName<small class="text-danger">Offline</small></span></a>
+
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer text-center"> 2017 &copy; BingoMovies Admin brought to you by BingoMovies.com </footer>
+        </div>
+    </div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Content/AdminPanel/"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <script src="~/Content/AdminPanel/html/js/jquery.slimscroll.js"></script>
+    <script src="js/waves.js"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/chartist-js/dist/chartist.min.js"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/Content/AdminPanel/html/js/custom.min.js"></script>
+    <script src="~/Content/AdminPanel/html/js/dashboard1.js"></script>
+    <script src="~/Content/AdminPanel/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+

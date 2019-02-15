@@ -1,0 +1,400 @@
+﻿
+@using BingoMoviesPro.Models
+@using Microsoft.AspNet.Identity
+@model BingoMoviesPro.ViewModel.AccountClass
+@{
+                /**/
+
+                /**/
+
+                /**/
+
+                /**/
+                int idmov = ViewBag.Idofmovie;
+                Layout = null;
+                if (Request.IsAuthenticated)
+                {
+                    var name = User.Identity.Name;
+                    int myid = ViewBag.mineid;
+                    var userID = User.Identity.GetUserId();
+                }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BingoMovies</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <link href="~/Content/img/favicon.png" rel="icon">
+    <link href="~/Content/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
+    <link href="~/Content/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet" type='text/css'>
+    <link href="~/Content/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/Content/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="~/Content/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/Content/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    @@font-face {
+        font-family: 'alk';
+        src: url("../../Content/Fonts/alk-sanet.ttf");
+    }
+
+    #buttonleft {
+        margin-left: 10px;
+    }
+</style>
+<body style="background-color:#EDEDED;">
+    <header id="header" style="background-color:black;height: 72px;padding: 23px 0">
+        <div class="container-fluid">
+
+            <div id="logo" class="pull-left">
+                <h1><a href="/Main/MainPage" class="scrollto">Bingo</a></h1>
+            </div>
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li class="menu-active"><a href="#intro" style="font-family:'Montserrat', sans-serif;font-weight: 700;">TV</a></li>
+                    <li><a href="/Main/Movies">ფილმი</a></li>
+                    <li><a href="#services">სერიალი</a></li>
+                    <li><a href="#portfolio" style="font-family:'alk';">თამაშები</a></li>
+                    <li class="menu-has-children">
+                        @if (!Request.IsAuthenticated)
+                        {
+                            <a href="">შესვლა</a>
+                            <ul>
+                                <li><a href="#" data-toggle="modal" data-target="#exampleModal">შესვლა</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#exampleModal">რეგისტრაცია</a></li>
+                            </ul>
+                        }
+                        else if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <a href="" style="font-family: 'Montserrat', sans-serif; font-weight: 550;">@User.Identity.GetUserName()</a>
+                            <ul>
+                                <li><a href="/Manage/Index">სამართავი პანელი</a></li>
+                                <li><a href="/Manage/Index">კოლექცია</a></li>
+                                <li><a href="/Manage/Index">ვაპირებ ყურებას</a></li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">გამოსვლა</a></li>
+                                }
+                            </ul>
+                        }
+                        else if (Request.IsAuthenticated && User.IsInRole("User"))
+                        {
+                            <a href="" style="font-family: 'Montserrat', sans-serif; font-weight: 550;">@User.Identity.GetUserName()</a>
+                            <ul>
+                                <li><a href="/Manage2/UserPage/@ViewBag.mineid">სამართავი პანელი</a></li>
+                                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">გამოსვლა</a></li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="intro" style="height: 85vh;">
+        @foreach (var item in Model.Movies.Where(x => x.Id == idmov))
+        {
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="@item.MovieVdpath" allowfullscreen></iframe>
+            </div>
+        }
+    </section>
+    <div class="modal fade" id="exampleModal" tabindex="-1" style="text-align: center;position:absolute;z-index:10000000;" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#SignUp" style="color:black;">რეგისტრაცია</a></li>
+                        <li><a data-toggle="tab" href="#SignIn" style="color:black;padding-left: 30px;">შესვლა</a></li>
+                    </ul>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content" style="width: 100%;">
+                        <div id="SignUp" class="tab-pane fade in active">
+                            @Html.Partial("~/Views/SignUp.cshtml", Model.Register)
+                        </div>
+                        <div id="SignIn" class="tab-pane fade in">
+                            @Html.Partial("~/Views/SingIn.cshtml", Model.Login)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <section id="portfolio" class="section-bg" style="padding:10px 0">
+            <div class="container">
+
+                <header class="section-header" style="margin-top:10px;">
+                    <img src="http://trgde.adocean.pl/files/akipinnkqig/sockllelwc/lcpkeqmkvb/TV_980x150.jpg" width="100%" height="150px" />
+                </header>
+                <div class="row portfolio-container" style="margin-top:20px;">
+
+                    @foreach (var item in Model.Movies.Where(x => x.Id == idmov))
+                    {
+                        <div class="col-lg-3 col-md-6 portfolio-item filter-app wow fadeInUp" data-wow-delay="0.1s" style="width:300px;height:400px;">
+                            <div class="portfolio-wrap">
+                                <img src="@item.MovieImgpath" class="img-fluid" alt="" style="width: 100%;height:300px;">
+                                @using (Html.BeginForm("WatchLater", "Main", FormMethod.Post))
+                                {
+                                    if (Request.IsAuthenticated)
+                                    {
+                                        <button type="submit" class="btn btn-primary" style="color:white;font-family: 'alk';width:100%;margin-top:8px;"><i class="fa fa-eye" aria-hidden="true"></i>ვაპირებ ყურებას</button>
+                                    }
+                                }
+                                <button class="btn btn-danger" style="color:white;font-family: 'alk';width:100%;margin-top:8px;"><i class="fa fa-imdb fa-2x" aria-hidden="true"></i>@item.MovieImdb</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-9 portfolio-item filter-app wow fadeInUp" data-wow-delay="0.1s" style="background-color:white; width:100%;height:400px;">
+                            <div style="width:100%;">
+                                <p style="color:#6F6F6F;font-weight:400px;font-family: 'alk';float:left;">გამოშვების წელი:</p>
+                                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <button style="float:right;" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal"><i class="fa fa-edit" style="font-size:40px;color:white;"></i></button>
+                                    using (Html.BeginForm("DeleteMovie", "Main", FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+                                    {
+                                        <button type="submit" style="float:right;" class="btn btn-danger"><i class="fa fa-trash-o" style="font-size:40px;color:white;"></i></button>
+                                    }
+                                }
+                                <p style="color: #0083ca;font-family:'alk';display:block;margin-right:10px;">@item.ReleaseDate</p>
+                                <p style="color:#6F6F6F;font-weight:400px;font-family: 'alk';float:left;">ბიუჟეტი:</p>
+                                <p style="color: #0083ca;font-family:'alk';display:block;margin-right:10px;">@item.budget მლნ</p>
+                                <p style="color:#6F6F6F;font-weight:400px;font-family: 'alk';float:left;">ხანგრძლივობა:</p>
+                                <p style="color: #0083ca;font-family:'alk';display:block;margin-right:10px;">@item.MovieLength</p>
+                                <hr />
+                                <p style="color:#6F6F6F;font-weight:400px;font-family: 'alk';float:left;">რეჟისორი:</p>
+                                <p style="color: #0083ca;font-family:'alk';display:block;margin-right:10px;">@item.DirectorFullName</p>
+                                <hr />
+                                <p style="color:#6F6F6F;font-weight:400px;font-family: 'alk';float:left;">აღწერა:</p>
+                                <br />
+                                <br />
+                                <p style="display:block;font-family:'alk';font-size:14px;">@item.Description</p>
+                                @using (Html.BeginForm("AddToCollection", "Main", FormMethod.Post))
+                                {
+                                    if (Request.IsAuthenticated)
+                                    {
+                                        <button style="float:right;font-family:'alk';" type="submit" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal"><i class="fa fa-plus" style="font-size:35px;color:white;"></i></button>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <br />
+                    }
+                    <div class="col-lg-12 col-md-12 portfolio-item filter-app wow fadeInUp" data-wow-delay="0.1s" style="background-color:white;margin-top:15px; width:100%;height:180px;">
+                        <h5 style="color:#575757; font-family:'alk'; font-size:15px;">მსახიობები</h5>
+                        @foreach (var item in Model.MA.Where(x => x.MovieMainId == idmov))
+                        {
+                            int IdOfActor = item.ActorsId;
+                            foreach (var item2 in Model.Act.Where(x => x.Id == IdOfActor))
+                            {
+                                <div id="Actors" style="width:90px;float:left;margin-top:10px;">
+                                    <img src="@item2.ActorImg" alt="" style="width:90px;border-radius:15%;height:90px;display:block;padding:5px;">
+                                    <p style="font-family:'alk';font-size:12px;display:block;text-align:center;"><a href="/Main/Actor/@item2.Id">@item2.FullName</a></p>
+
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="col-lg-12 col-md-12 portfolio-item filter-app wow fadeInUp" data-wow-delay="0.1s" style="background-color:white;margin-top:15px; width:100%;height:400px;">
+                        <div style="width:100%;">
+                            <h5 style="display:block;font-family:'alk';font-size:15px;color:#6F6F6F;">კომენტარები</h5>
+
+                            @if (Request.IsAuthenticated)
+                            {
+                                foreach (var item in Model.UserSignUp.Where(x => x.Id == ViewBag.mineid))
+                                {
+                                    <div style="width:8%; float:left;">
+                                        <img src="@item.ProfileImage" width="60px" height="60px" />
+                                    </div>
+                                }
+                                <div style="width:92%;float:right">
+                                    @using (Html.BeginForm("AddComment", "Main", FormMethod.Post))
+                                    {
+
+                                        @Html.TextAreaFor(x => x.comments.Comment, new { @class = "form-control", @style = "max-height:64px;" })
+                                        @Html.ValidationMessageFor(x => x.comments.Comment, "", new { @class = "text-danger" })
+                                        <button type="submit" style="font-family: 'alk';color:#0083CA;background-color: white;border:0;float:right;">Post</button>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                            }
+                            <hr />
+                            <div style="width:100%;height:300px;;overflow-y:scroll;">
+                                @foreach (var item in Model.Comments.Where(x => x.MovieMainId == idmov))
+                                {
+                                    int id = item.ApplicationUserId;
+                                    foreach (var item2 in Model.UserSignUp.Where(x => x.Id == id))
+                                    {
+                                        if (Request.IsAuthenticated)
+                                        {
+
+                                            int myid = ViewBag.mineid;
+                                            if (item2.Id == myid)
+                                            {
+                                                <div style="width:6%; float:left;margin-top:15px;">
+                                                    <img src="@item2.ProfileImage" width="60px" height="60px" />
+                                                </div>
+                                                <div style="width:94%;float:right;margin-top:15px;">
+                                                    <p style="font-size:13px;margin-left:22px;color:#365899;">@item2.FirstName @item2.LastName </p>
+                                                    @using (Html.BeginForm("DeleteComment", "Main", new { Id = item.Id }, FormMethod.Post))
+                                                    {
+                                                        <button type="submit" style="background-color: white;border:0;font-size:10px;float:right;">წაშლა</button>
+                                                    }
+                                                    <button type="submit" style="background-color: white;border:0;font-size:10px;float:right;" data-toggle="modal" data-target="#exampleModal4">რედაქტირება</button>
+                                                    <!--EditComment-->
+                                                    <div class="modal fade" id="exampleModal4" style="z-index: 100000000;position:absolute" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <div class="form-group" style="width: 100%;">
+                                                                        <div class="col-md-offset-2 col-md-10" style="margin-left:0px;">
+                                                                            @using (Html.BeginForm("EditComment", "Main", new { Id = item.Id }, FormMethod.Post))
+                                                                            {
+                                                                                @*<input type="text" placeholder="კომენტარი" value="@item.Comment" class="form-control" name="commentText" />*@
+                                                                                @Html.TextBoxFor(x => x.comments.Comment, new { @class = "form-control", @Value = item.Comment })
+                                                                                @Html.ValidationMessageFor(x => x.comments.Comment, "", new { @class = "text-danger" })
+
+                                                                                <button type="submit" class="btn btn-default" style="background: #7460ee; color:white;">რედაქტირება</button>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--End-->
+                                                    <a style="font-family: 'alk';font-size:14px;margin-left:23px;display:block;">@item.Comment</a>
+                                                </div>
+                                            }
+
+                                        }
+                                    }
+                                }
+                                @{
+                                    int myid2 = ViewBag.mineid;
+                                    foreach (var item3 in Model.Comments.Where(x => x.MovieMainId == idmov && x.ApplicationUserId != myid2))
+                                    {
+                                        int usersid = item3.Id;
+                                        foreach (var item4 in Model.UserSignUp.Where(x => x.Id == item3.ApplicationUserId))
+                                        {
+                                            <div style="width:100%;float:right;margin-top:15px;">
+                                                <img src="@item4.ProfileImage" width="60px" height="60px" style="float:left;" />
+                                                <a style="font-size:12px;color:#365899;font-family:Verdana,sans-serif;margin-left:31px;color:#365899;">@item4.FirstName @item4.LastName </a>
+                                                <br />
+                                                <a style="font-family: 'alk';font-size:14px;margin-left:29px;">@item3.Comment</a>
+                                            </div>
+                                        }
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 100000000;position:absolute">
+        <div class="modal-dialog" role="document" style="width: 800px;">
+            <div class="modal-content" style="border-radius: 0;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" style="font-family: 'alk';font-size: 15px;">ფილმის რედაქტირება</h5>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("~/Views/MovieEditPartial.cshtml", Model.Movies)
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 footer-info">
+                        <h3>BizPage</h3>
+                        <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus. Scelerisque felis imperdiet proin fermentum leo. Amet volutpat consequat mauris nunc congue.</p>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>გვერდები</h4>
+                        <ul>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">მთავარი</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">ფილმი</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">სერიალი</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">თამაშები</a></li>
+                            <li><i class="ion-ios-arrow-right"></i> <a href="#">Privacy policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h4>კონტაქტი</h4>
+                        <p>
+                            A108 Adam Street <br>
+                            New York, NY 535022<br>
+                            United States <br>
+                            <strong>Phone:</strong> +1 5589 55488 55<br>
+                            <strong>Email:</strong> info@example.com<br>
+                        </p>
+
+                        <div class="social-links">
+                            <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                            <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+                            <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+                            <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-newsletter">
+                        <h4>საინფორმაციო ბიულეტენი</h4>
+                        <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna veniam enim veniam illum dolore legam minim quorum culpa amet magna export quem marada parida nodela caramase seza.</p>
+                        <form action="" method="post">
+                            <input type="email" name="email"><input type="submit" value="Subscribe">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Content/lib/jquery/jquery.min.js"></script>
+    <script src="~/Content/lib/jquery/jquery-migrate.min.js"></script>
+    <script src="~/Content/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/lib/easing/easing.min.js"></script>
+    <script src="~/Content/lib/superfish/hoverIntent.js"></script>
+    <script src="~/Content/lib/superfish/superfish.min.js"></script>
+    <script src="~/Content/lib/wow/wow.min.js"></script>
+    <script src="~/Content/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/Content/lib/counterup/counterup.min.js"></script>
+    <script src="~/Content/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/Content/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="~/Content/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/Content/lib/touchSwipe/jquery.touchSwipe.min.js"></script>
+    <script src="~/Content/contactform/contactform.js"></script>
+    <script src="~/Content/js/main.js"></script>
+</body>
+</html>
+

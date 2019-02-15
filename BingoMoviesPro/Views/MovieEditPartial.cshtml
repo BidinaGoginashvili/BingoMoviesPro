@@ -1,0 +1,86 @@
+﻿@using System.Web.Configuration
+@using Microsoft.AspNet.Identity
+@model IEnumerable<BingoMoviesPro.Models.MovieMain>
+@{
+                /**/
+
+                int idmov = ViewBag.Idofmovie;
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+@foreach (var item in Model.Where(x => x.Id == idmov))
+{
+    using (Html.BeginForm("EditMovie", "Main", FormMethod.Post, new { @class = "form-horizontal", role = "form", @style = "width:100%;" }))
+    {
+        <div style="width: 100%;">
+            <div class="form-group" style="width:100%">
+                <div class="col-md-10" style="width:50%;float:left">
+                    @Html.Label("FirstName", "სახელი ქართულად")
+                    @Html.TextBoxFor(m => m.First().MovieTitleKa, new { @Value = item.MovieTitleKa, @class = "form-control", @placeholder = "ფილმის სახელი ქართულად", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().MovieTitleKa, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="col-md-10" style="width:50%;float:right;">
+                    @Html.Label("FirstName", "სახელი ინგლისურად")
+                    @Html.TextBoxFor(m => m.First().MovieTitleEng, new { @Value = item.MovieTitleEng, @class = "form-control", @placeholder = "ფილმის სახელი ინგლისურად", name = "MovieTitleEng", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().MovieTitleEng, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group" style="width:100%">
+                <div class="col-md-10" style="width:33.3%;float:left;">
+                    @Html.Label("FirstName", "სურათის PATH")
+                    @Html.TextBoxFor(m => m.First().MovieImgpath, new { @Value = item.MovieImgpath, @class = "form-control", @placeholder = "ხანგრძლივობა", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().MovieImgpath, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-10" style="width:33.3%;float:left;">
+                    @Html.Label("FirstName", "ვიდეოს PATH")
+                    @Html.TextBoxFor(m => m.First().MovieVdpath, new { @Value = item.MovieVdpath, @class = "form-control", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().MovieVdpath, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-10" style="width:33.3%;float:left;">
+                    @Html.Label("FirstName", "რეჯისორი")
+                    @Html.TextBoxFor(m => m.First().DirectorFullName, new { @Value = item.DirectorFullName, @class = "form-control", placeholder = "ბიუჟეტი", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().DirectorFullName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group" style="width:100%">
+                <div class="col-md-10" style="width:33.3%;float:left;">
+                    @Html.Label("FirstName", "ხანგრძლივობა")
+                    @Html.TextBoxFor(m => m.First().MovieLength, new { @Value = item.MovieLength, @class = "form-control", @placeholder = "ხანგრძლივობა", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().MovieLength, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-10" style="width:33.3%;float:left;">
+                    @Html.Label("FirstName", "IMDB")
+                    @Html.TextBoxFor(m => m.First().MovieImdb, new { @Value = item.MovieImdb, @class = "form-control", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().MovieImdb, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-10" style="width:33.3%;float:left;">
+                    @Html.Label("FirstName", "ბიუჟეტი")
+                    @Html.TextBoxFor(m => m.First().budget, new { @Value = item.budget, @class = "form-control", placeholder = "ბიუჟეტი", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().budget, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="width:100%">
+                <div class="col-md-10" style="width:50%;float:right;">
+                    @Html.Label("FirstName", "გამოშვების წელი")
+                    @Html.TextBoxFor(m => m.First().ReleaseDate, new { @Value = item.ReleaseDate, @class = "form-control", @placeholder = "გამოშვების წელი", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().ReleaseDate, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-10" style="width:50%;float:right;">
+
+                    @Html.Label("FirstName", "აღწერა")
+                    @Html.TextBoxFor(m => m.First().Description, new { @Value = item.Description, @class = "form-control", placeholder = "აღწერა", @style = "position:relative;z-index:100000000000000000;" })
+                    @Html.ValidationMessageFor(x => x.First().Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group" style="width:100%;">
+                <div class="col-md-offset-2 col-md-10" style="width:100%;">
+                    <input type="submit" value="რედაქტირება" class="btn btn-default" style="background: #7460ee; color:white;" />
+                </div>
+            </div>
+        </div>
+    }
+}
